@@ -1,9 +1,8 @@
 import { Order } from './proyecto_1';
 
-
-class MaxHeapOrders {
+export class MaxHeapOrders {
     private heap: Order[];
-    private n: number; // cantidad de elementos ingresados
+    private n: number;
 
     constructor(size: number) {
         this.heap = new Array(size + 1);
@@ -11,8 +10,9 @@ class MaxHeapOrders {
     }
 
     public insert(order: Order): void {
-        if (this.n == (this.heap.length - 1))
+        if (this.n == (this.heap.length - 1)) {
             this.resize(2 * this.heap.length);
+        }
         this.n++;
         this.heap[this.n] = order;
         this.swap(this.n);
@@ -31,26 +31,33 @@ class MaxHeapOrders {
 
     private resize(newSize: number): void {
         let newHeap: Order[] = new Array(newSize);
-        for (let i = 0; i < this.heap.length; i++)
+        for (let i = 0; i < this.heap.length; i++) {
             newHeap[i] = this.heap[i];
+        }
         this.heap = newHeap;
     }
 
     public getMax(): Order {
+        return this.heap[1]; 
+    }
+
+    public removeMax(): Order {
         let max: Order = this.heap[1];
         this.heap[1] = this.heap[this.n];
         this.n--;
         this.sink(1);
-        return max;
+        return max; 
     }
 
     private sink(k: number): void {
         while (2 * k <= this.n) {
             let j: number = 2 * k;
-            if (j < this.n && this.heap[j].price < this.heap[j + 1].price)
+            if (j < this.n && this.heap[j].price < this.heap[j + 1].price) {
                 j++;
-            if (this.heap[k].price >= this.heap[j].price)
+            }
+            if (this.heap[k].price >= this.heap[j].price) {
                 break;
+            }
             let temp: Order = this.heap[k];
             this.heap[k] = this.heap[j];
             this.heap[j] = temp;
@@ -58,11 +65,3 @@ class MaxHeapOrders {
         }
     }
 }
-
-
-let buyHeap = new MaxHeapOrders(10);
-buyHeap.insert(new Order("Coca-Cola", 100, 50));
-buyHeap.insert(new Order("Amazon", 200, 55));
-buyHeap.insert(new Order("BBVA", 150, 45));
-
-console.log("Orden de compra con mayor prioridad: ", buyHeap.getMax());

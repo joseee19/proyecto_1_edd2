@@ -13,16 +13,6 @@ class MarketSimulator {
         this.transactionHistory = [];
     }
 
-    public addBuyOrder(order: Order): void {
-        this.buyHeap.insert(order);
-        this.matchOrders();
-    }
-
-    public addSellOrder(order: Order): void {
-        this.sellHeap.insert(order);
-        this.matchOrders();
-    }
-
     private matchOrders(): void {
         while (this.buyHeap.getMax() && this.sellHeap.getMin()) {
             let buyOrder = this.buyHeap.getMax();
@@ -46,10 +36,10 @@ class MarketSimulator {
                 sellOrder.quantity -= transactionQuantity;
 
                 if (buyOrder.quantity === 0) {
-                    this.buyHeap.getMax();
+                    this.buyHeap.removeMax(); 
                 }
                 if (sellOrder.quantity === 0) {
-                    this.sellHeap.getMin();
+                    this.sellHeap.removeMin(); 
                 }
             } else {
                 break;
@@ -60,6 +50,25 @@ class MarketSimulator {
     public getTransactionHistory(): any[] {
         return this.transactionHistory;
     }
+
+    public addBuyOrder(order: Order): void {
+        this.buyHeap.insert(order);
+        this.matchOrders();
+    }
+
+    public addSellOrder(order: Order): void {
+        this.sellHeap.insert(order);
+        this.matchOrders();
+    }
 }
 
 
+let simulator = new MarketSimulator();
+simulator.addBuyOrder(new Order("Amazon", 100, 48));
+simulator.addBuyOrder(new Order("Google", 50, 55));
+simulator.addBuyOrder(new Order("Microsoft", 75, 52));
+simulator.addSellOrder(new Order("Amazon", 80, 47));
+simulator.addSellOrder(new Order("Google", 50, 56));
+simulator.addSellOrder(new Order("Microsoft", 100, 50));
+
+console.log("Historial de transacciones: ", simulator.getTransactionHistory());

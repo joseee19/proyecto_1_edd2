@@ -1,9 +1,8 @@
 import { Order } from './proyecto_1';
 
-
-class MinHeapOrders {
+export class MinHeapOrders {
     private heap: Order[];
-    private n: number; // cantidad de elementos ingresados
+    private n: number; 
 
     constructor(size: number) {
         this.heap = new Array(size + 1);
@@ -11,8 +10,9 @@ class MinHeapOrders {
     }
 
     public insert(order: Order): void {
-        if (this.n == (this.heap.length - 1))
+        if (this.n == (this.heap.length - 1)) {
             this.resize(2 * this.heap.length);
+        }
         this.n++;
         this.heap[this.n] = order;
         this.swap(this.n);
@@ -31,26 +31,33 @@ class MinHeapOrders {
 
     private resize(newSize: number): void {
         let newHeap: Order[] = new Array(newSize);
-        for (let i = 0; i < this.heap.length; i++)
+        for (let i = 0; i < this.heap.length; i++) {
             newHeap[i] = this.heap[i];
+        }
         this.heap = newHeap;
     }
 
     public getMin(): Order {
+        return this.heap[1]; 
+    }
+
+    public removeMin(): Order {
         let min: Order = this.heap[1];
         this.heap[1] = this.heap[this.n];
         this.n--;
         this.sink(1);
-        return min;
+        return min; 
     }
 
     private sink(k: number): void {
         while (2 * k <= this.n) {
             let j: number = 2 * k;
-            if (j < this.n && this.heap[j].price > this.heap[j + 1].price)
+            if (j < this.n && this.heap[j].price > this.heap[j + 1].price) {
                 j++;
-            if (this.heap[k].price <= this.heap[j].price)
+            }
+            if (this.heap[k].price <= this.heap[j].price) {
                 break;
+            }
             let temp: Order = this.heap[k];
             this.heap[k] = this.heap[j];
             this.heap[j] = temp;
@@ -59,10 +66,3 @@ class MinHeapOrders {
     }
 }
 
-
-let sellHeap = new MinHeapOrders(10);
-sellHeap.insert(new Order("Amazon", 100, 48));
-sellHeap.insert(new Order("Pepsi", 200, 46));
-sellHeap.insert(new Order("PayPal", 150, 50));
-
-console.log("Orden de venta con menor prioridad: ", sellHeap.getMin());
