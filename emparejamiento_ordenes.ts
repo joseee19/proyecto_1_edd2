@@ -2,7 +2,7 @@ import { Order } from "./proyecto_1";
 import { MaxHeapOrders } from "./ordenes_compra";
 import { MinHeapOrders } from "./ordenes_venta";
 
-class MarketSimulator {
+class MarkSimulator {
     private buyHeap: MaxHeapOrders;
     private sellHeap: MinHeapOrders;
     private transactionHistory: any[];
@@ -63,7 +63,7 @@ class MarketSimulator {
 }
 
 
-let simulator = new MarketSimulator();
+let simulator = new MarkSimulator();
 simulator.addBuyOrder(new Order("Amazon", 100, 48));
 simulator.addBuyOrder(new Order("Google", 50, 55));
 simulator.addBuyOrder(new Order("Microsoft", 75, 52));
